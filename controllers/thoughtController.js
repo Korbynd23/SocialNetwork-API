@@ -3,7 +3,7 @@ const { Thought, User } = require('../models');
 module.exports = {
       // Get all thoughts
   getThoughts(req, res) {
-    Course.find()
+    Thought.find()
       .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(500).json(err));
   },
@@ -59,8 +59,6 @@ module.exports = {
 
 // Add an reaction to a thought
 addReaction(req, res) {
-    console.log('You are adding an reaction');
-    console.log(req.body);
     Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         { $addToSet: { reactions: req.body} },
@@ -81,7 +79,7 @@ addReaction(req, res) {
 removeReaction(req, res) {
     Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { $pull: { reactions: { _id: req.params._id } } },
         { runValidators: true, new: true }
     )
         .then((thought) =>
